@@ -11,6 +11,16 @@ app.use(express.json());
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
+// 🔍 Temporary route to list models
+app.get("/models", async (req, res) => {
+  try {
+    const models = await genAI.listModels();
+    res.json(models);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-pro-latest",
 });
